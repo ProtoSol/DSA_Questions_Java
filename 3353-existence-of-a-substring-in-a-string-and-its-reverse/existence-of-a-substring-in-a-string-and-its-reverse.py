@@ -1,9 +1,12 @@
 class Solution:
     def isSubstringPresent(self, s: str) -> bool:
-        b=s[::-1]
-        for i in range(1,len(s)):
-            if (s[i-1]+s[i]) in b:
+
+        # Will try Later in java for better Optimization.
+
+        N = len(s)
+        r = "".join(reversed(list(s)))
+
+        for i in range(1,N):
+            if s[i-1] + s[i] in r:
                 return True
         return False
-
-        
