@@ -5,6 +5,6 @@
 
 SELECT name
 FROM Customer
-WHERE COALESCE(referee_id,-1) <> 2;
+WHERE IFNULL(referee_id,-1) <> 2;
 
 -- COALESCE is used if multiple Column has null value present.
