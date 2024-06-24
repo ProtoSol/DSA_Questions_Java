@@ -17,9 +17,9 @@ LEFT JOIN (
     FROM Accounts
 ) T ON cat.category = T.category
 GROUP BY cat.category
-ORDER BY 
-    CASE 
-        WHEN cat.category = 'Low Salary' THEN 1
-        WHEN cat.category = 'Average Salary' THEN 2
-        WHEN cat.category = 'High Salary' THEN 3
-    END;
+ORDER BY cat.category;
+    -- CASE 
+    --     WHEN cat.category = 'Low Salary' THEN 1
+    --     WHEN cat.category = 'Average Salary' THEN 2
+    --     WHEN cat.category = 'High Salary' THEN 3
+    -- END;
