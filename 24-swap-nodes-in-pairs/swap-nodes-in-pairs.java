@@ -26,10 +26,12 @@ class Solution {
             return head;
         }
 
-        ListNode temp = head.next;
-        head.next = swapPairs(head.next.next);
-        temp.next = head;
+        ListNode first = head;
+        ListNode second = head.next;
 
-        return temp;
+        first.next = swapPairs(second.next);
+        second.next = first;
+
+        return second;
     }
 }
