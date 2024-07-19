@@ -17,8 +17,8 @@ class Solution {
         for(int i = 0; i < isConnected.length; i++){
             if(!visited[i]){
                 // If not visited
-                helper(i, isConnected, visited);
                 countComponents++;
+                helper(i, isConnected, visited);
             }
         }
         return countComponents;
