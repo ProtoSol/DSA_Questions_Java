@@ -1,3 +1,5 @@
+import java.util.*;
+
 class Solution {
     public boolean validPath(int n, int[][] edges, int source, int destination) {
         // Create an Adjacent Matrix List
@@ -15,32 +17,34 @@ class Solution {
             adjList.get(edge[1]).add(edge[0]);
         }
         
+        // Create a queue for BFS
+        Queue<Integer> queue = new LinkedList<>();
+        
         // Create a boolean array to keep track of visited nodes
         boolean[] visited = new boolean[n];
         
-        // Start DFS from the source
-        return dfs(adjList, visited, source, destination);
-    }
-    
-    private boolean dfs(List<List<Integer>> adjList, boolean[] visited, int current, int destination) {
-        // If we've reached the destination, return true
-        if (current == destination) {
-            return true;
-        }
+        // Add the source to the queue and mark it as visited
+        queue.offer(source);
+        visited[source] = true;
         
-        // Mark the current node as visited
-        visited[current] = true;
-        
-        // Explore all neighbors of the current node
-        for (int neighbor : adjList.get(current)) {
-            if (!visited[neighbor]) {
-                if (dfs(adjList, visited, neighbor, destination)) {
-                    return true;
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            
+            // If we've reached the destination, return true
+            if (current == destination) {
+                return true;
+            }
+            
+            // Explore all neighbors of the current node
+            for (int neighbor : adjList.get(current)) {
+                if (!visited[neighbor]) {
+                    queue.offer(neighbor);
+                    visited[neighbor] = true;
                 }
             }
         }
         
-        // If we've explored all paths from this node and haven't found the destination, return false
+        // If we've explored all reachable nodes and haven't found the destination, return false
         return false;
     }
 }
