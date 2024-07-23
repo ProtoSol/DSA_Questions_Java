@@ -1,24 +1,25 @@
 class Solution {
     public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-        List<List<Integer>> res=new ArrayList<>();
-        List<Integer> currentPath=new ArrayList<>();
-        currentPath.add(0);
-        int length=graph.length;
-        recSol(res,0,length-1,graph,currentPath);
-        return res;
+        List<List<Integer>> allPaths = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        helper(0, graph, path, allPaths);
+        return allPaths;
     }
-    public void recSol(List<List<Integer>> resList,int currentNode,int destinationNode,int[][] graph ,List<Integer> currentPath ){
-            if(currentNode == destinationNode){
-                List<Integer> finalPath=new ArrayList<>();
-                finalPath.addAll(currentPath);
-                resList.add(finalPath);
-            }else{
-                int[] childNode=graph[currentNode];
-                for(int temp:childNode){
-                    currentPath.add(temp);
-                    recSol(resList,temp,destinationNode,graph,currentPath);                    
-                    currentPath.remove(currentPath.size()-1);
-                }
-            }
+    void helper(int vertex, int[][] graph, List<Integer> path, List<List<Integer>> allPaths){
+        path.add(vertex);
+        // Base case
+        if( vertex== graph.length-1){
+            allPaths.add(new ArrayList<>(path));
+            return;
+        }
+     
+        int neighbours [] = graph[vertex];
+        for(int neighbour : neighbours){
+            helper(neighbour,graph, path, allPaths);
+            // BackTracking
+            path.remove(path.size()-1);
+
+        }
+
     }
 }
