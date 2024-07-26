@@ -1,18 +1,20 @@
 class Solution {
-    // Compute the Calculation and add it to the Memo
-    Map<Integer, Integer> memo = new HashMap<>();
+    // Bottom Up
     public int fib(int n) {
-        if(n == 0 || n == 1){
-            return n;
+        if(n == 0){
+            return 0;
         }
-        // Before Calc check if Present in memo
-        if(memo.containsKey(n)){
-            return memo.get(n);
+        int[] dp = new int[n+1];
+        // Take care of the Base Case
+        // dp[0] = 0;
+        dp[1] = 1;
+        // Iterate through the array
+        for(int i = 2; i <= n; i++){
+            int firstTerm = dp[i-1];
+            int secondTerm = dp[i-2];
+            int thirdTerm = firstTerm + secondTerm;
+            dp[i] = thirdTerm;
         }
-        int first = fib(n-1);
-        int second = fib(n-2);
-        int third  = first + second;
-        memo.put(n,third); // Store in the Cache
-        return memo.get(n); // Return the value from the Cache
+        return dp[n];
     }
 }
