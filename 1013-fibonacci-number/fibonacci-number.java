@@ -13,6 +13,6 @@ class Solution {
         int second = fib(n-2);
         int third  = first + second;
         memo.put(n,third); // Store in the Cache
-        return third;
+        return memo.get(n); // Return the value from the Cache
     }
 }
