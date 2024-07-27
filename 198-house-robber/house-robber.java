@@ -1,26 +1,21 @@
 class Solution {
-    // Top Down
-    private int[] memo;
-    private int[] nums;
-
+    // Bottom Up
     public int rob(int[] nums) {
-        this.nums = nums;
-        this.memo = new int[nums.length];
-        Arrays.fill(memo, -1);
-        return robFrom(0);
-    }
-
-    private int robFrom(int i) {
-        if (i >= nums.length) {
-            return 0;
+        int n = nums.length;
+        // Base Case
+        if (n == 1) {
+            return nums[0];
         }
-
-        if (memo[i] != -1) {
-            return memo[i];
+        // Cache
+        int[] dp = new int[n];
+        // Filling the Initial Terms
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0], nums[1]);
+        // Calculating Values
+        for (int i = 2; i < n; i++) {
+            dp[i] = Math.max(dp[i - 1], nums[i] + dp[i - 2]);
         }
-
-        int result = Math.max(nums[i] + robFrom(i + 2), robFrom(i + 1));
-        memo[i] = result;
-        return result;
+        // Return the Last Value
+        return dp[n - 1];        
     }
 }
