@@ -1,63 +1,42 @@
-class Pair {
-    int x;
-    int y;
-    int distance;
-
-    Pair(int x, int y, int distance) {
-        this.x = x;
-        this.y = y;
-        this.distance = distance;
-    }
-}
-
 class Solution {
+    private static final int[][] DIR = {
+        {1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}
+    };
+
     public int shortestPathBinaryMatrix(int[][] grid) {
         int n = grid.length;
-
-        // Check if the start or end point is blocked
-        if (grid[0][0] == 1 || grid[n - 1][n - 1] == 1) {
+        if (grid[0][0] != 0 || grid[n - 1][n - 1] != 0) {
             return -1;
         }
 
-        // Directions for 8 possible movements
-        int[][] directions = {
-            {-1, -1}, {-1, 0}, {-1, 1}, 
-            {0, -1}, {0, 1}, 
-            {1, -1}, {1, 0}, {1, 1}
-        };
+        // BFS setup using Queue instead of Deque
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{0, 0});
+        grid[0][0] = 1;  // Mark as visited and store the distance
 
-        // PriorityQueue for Dijkstra's algorithm, storing Pair (x, y, distance)
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> a.distance - b.distance);
-        pq.add(new Pair(0, 0, 1)); // Start from the top-left corner with path length 1
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            int r = cur[0], c = cur[1];
+            int dist = grid[r][c];
 
-        // Visited matrix to track visited cells
-        boolean[][] visited = new boolean[n][n];
-        visited[0][0] = true;
-
-        while (!pq.isEmpty()) {
-            Pair current = pq.poll();
-            int x = current.x;
-            int y = current.y;
-            int dist = current.distance;
-
-            // If we've reached the bottom-right corner, return the path length
-            if (x == n - 1 && y == n - 1) {
+            // Check if we reached the bottom-right corner
+            if (r == n - 1 && c == n - 1) {
                 return dist;
             }
 
             // Explore all 8 directions
-            for (int[] dir : directions) {
-                int newX = x + dir[0];
-                int newY = y + dir[1];
+            for (int[] dir : DIR) {
+                int nextR = r + dir[0];
+                int nextC = c + dir[1];
 
-                if (newX >= 0 && newY >= 0 && newX < n && newY < n && grid[newX][newY] == 0 && !visited[newX][newY]) {
-                    visited[newX][newY] = true;
-                    pq.add(new Pair(newX, newY, dist + 1));
+                // Check bounds and whether the cell is unvisited (value 0)
+                if (nextR >= 0 && nextC >= 0 && nextR < n && nextC < n && grid[nextR][nextC] == 0) {
+                    queue.offer(new int[]{nextR, nextC});
+                    grid[nextR][nextC] = dist + 1;  // Mark as visited and store the distance
                 }
             }
         }
 
-        // If no path found, return -1
-        return -1;
+        return -1;  // No path found
     }
 }
