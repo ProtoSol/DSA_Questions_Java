@@ -1,8 +1,8 @@
 class Solution {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> res = new ArrayList<>();
-
-        makeCombination(candidates, target, 0, new ArrayList<>(), 0, res);
+        List<Integer> comb = new ArrayList<>();
+        makeCombination(candidates, target, 0, comb, 0, res);
         return res;
     }
 
