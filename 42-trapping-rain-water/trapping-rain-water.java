@@ -3,9 +3,7 @@ class Solution {
         int n = height.length;
         if (n == 0) return 0;
 
-        // Arrays to store the maximum height to the left and right of each position
         int[] leftMax = new int[n];
-        int[] rightMax = new int[n];
 
         // Fill the leftMax array
         leftMax[0] = height[0];
@@ -13,19 +11,15 @@ class Solution {
             leftMax[i] = Math.max(leftMax[i - 1], height[i]);
         }
 
-        // Fill the rightMax array
-        rightMax[n - 1] = height[n - 1];
-        for (int i = n - 2; i >= 0; i--) {
-            rightMax[i] = Math.max(rightMax[i + 1], height[i]);
-        }
-
-        // Calculate the total water trapped
         int totalWater = 0;
-        for (int i = 0; i < n; i++) {
-            int waterTrapped = Math.min(leftMax[i], rightMax[i]) - height[i];
-            if (waterTrapped > 0) {
-                totalWater += waterTrapped;
-            }
+        int rightMax = height[n - 1];
+
+        // Traverse from right to left, calculating rightMax on the fly
+        for (int i = n - 1; i >= 0; i--) {
+            rightMax = Math.max(rightMax, height[i]);
+
+            // Calculate water trapped using the minimum of leftMax and rightMax
+            totalWater += Math.min(leftMax[i], rightMax) - height[i];
         }
 
         return totalWater;
