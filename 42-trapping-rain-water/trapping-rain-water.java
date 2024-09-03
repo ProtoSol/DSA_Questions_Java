@@ -1,30 +1,47 @@
+class Pair {
+    int leftMax;
+    int value;
+    int rightMax;
+
+    public Pair(int a, int b, int c) {
+        this.leftMax = a;
+        this.value = b;
+        this.rightMax = c;
+    }
+}
+
 class Solution {
     public int trap(int[] height) {
         int n = height.length;
         if (n == 0) return 0;
-        
-        int[] left = new int[n];
-        int[] right = new int[n];
-        int storedWater = 0;
-        
-        // Fill left array
-        left[0] = height[0];
-        for (int i = 1; i < n; i++) {
-            left[i] = Math.max(left[i - 1], height[i]);
-        }
-        
-        // Fill right array
-        right[n - 1] = height[n - 1];
-        for (int i = n - 2; i >= 0; i--) {
-            right[i] = Math.max(right[i + 1], height[i]);
-        }
-        
-        // Calculate trapped water
+
+        // Create an array of Pairs to store leftMax, value, and rightMax
+        Pair[] pairs = new Pair[n];
+
+        // Calculate leftMax for each position
+        int leftMax = 0;
         for (int i = 0; i < n; i++) {
-            int minHeight = Math.min(left[i], right[i]);
-            storedWater += minHeight - height[i];
+            leftMax = Math.max(leftMax, height[i]);
+            pairs[i] = new Pair(leftMax, height[i], 0); // rightMax is 0 for now
         }
-        
-        return storedWater;
+
+        // Calculate rightMax for each position
+        int rightMax = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            rightMax = Math.max(rightMax, height[i]);
+            pairs[i].rightMax = rightMax;
+        }
+
+        // Calculate the total water trapped
+        int totalWater = 0;
+        for (int i = 0; i < n; i++) {
+            // Water trapped at each position is determined by the minimum of leftMax and rightMax, minus the height
+            int waterTrapped = Math.min(pairs[i].leftMax, pairs[i].rightMax) - pairs[i].value;
+            if (waterTrapped > 0) {
+                totalWater += waterTrapped;
+            }
+        }
+
+        return totalWater;
     }
 }
