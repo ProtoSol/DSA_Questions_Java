@@ -1,42 +1,28 @@
-class Pair {
-    int leftMax;
-    int value;
-    int rightMax;
-
-    public Pair(int a, int b, int c) {
-        this.leftMax = a;
-        this.value = b;
-        this.rightMax = c;
-    }
-}
-
 class Solution {
     public int trap(int[] height) {
         int n = height.length;
         if (n == 0) return 0;
 
-        // Create an array of Pairs to store leftMax, value, and rightMax
-        Pair[] pairs = new Pair[n];
+        // Arrays to store the maximum height to the left and right of each position
+        int[] leftMax = new int[n];
+        int[] rightMax = new int[n];
 
-        // Calculate leftMax for each position
-        int leftMax = 0;
-        for (int i = 0; i < n; i++) {
-            leftMax = Math.max(leftMax, height[i]);
-            pairs[i] = new Pair(leftMax, height[i], 0); // rightMax is 0 for now
+        // Fill the leftMax array
+        leftMax[0] = height[0];
+        for (int i = 1; i < n; i++) {
+            leftMax[i] = Math.max(leftMax[i - 1], height[i]);
         }
 
-        // Calculate rightMax for each position
-        int rightMax = 0;
-        for (int i = n - 1; i >= 0; i--) {
-            rightMax = Math.max(rightMax, height[i]);
-            pairs[i].rightMax = rightMax;
+        // Fill the rightMax array
+        rightMax[n - 1] = height[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            rightMax[i] = Math.max(rightMax[i + 1], height[i]);
         }
 
         // Calculate the total water trapped
         int totalWater = 0;
         for (int i = 0; i < n; i++) {
-            // Water trapped at each position is determined by the minimum of leftMax and rightMax, minus the height
-            int waterTrapped = Math.min(pairs[i].leftMax, pairs[i].rightMax) - pairs[i].value;
+            int waterTrapped = Math.min(leftMax[i], rightMax[i]) - height[i];
             if (waterTrapped > 0) {
                 totalWater += waterTrapped;
             }
