@@ -1,21 +1,17 @@
 class Solution {
     public int maxProfit(int[] prices) {
-        if (prices == null || prices.length == 0) {
-            return 0;
-        }
-
-        int minPrice = prices[0];
+        int l = 0;
+        int r = 1;
         int maxProfit = 0;
-
-        for (int i = 1; i < prices.length; i++) {
-            // Update minPrice to the lowest price seen so far
-            minPrice = Math.min(minPrice, prices[i]);
-            // Calculate the potential profit if we sold at the current price
-            int profit = prices[i] - minPrice;
-            // Update maxProfit if the current profit is greater than the previously recorded maxProfit
-            maxProfit = Math.max(maxProfit, profit);
+        while(r < prices.length){
+            if(prices[l] < prices[r]){
+                maxProfit = Math.max(maxProfit, prices[r] - prices[l]);
+            }
+            else{
+                l = r;
+            }
+            r++;
         }
-
         return maxProfit;
     }
 }
