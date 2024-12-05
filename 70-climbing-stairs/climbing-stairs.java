@@ -2,10 +2,12 @@ class Solution {
     private Map<Integer, Integer> memo = new HashMap<>();
     
     public int climbStairs(int n) {
-        // O(n) time complexity O(n) space complexity
+        // Base Case
         if(n == 0) return 0;
         if(n == 1) return 1;
         if(n == 2) return 2;
+
+        // O(n) time complexity O(n) space complexity
         // int[] dp = new int[n+1];
         // dp[0] = 0;
         // dp[1] = 1;
@@ -15,6 +17,7 @@ class Solution {
         // }
         // return dp[n];
 
+        // O(n) time complexity O(1) space complexity
         int first = 1;
         int second = 2;
         for(int i = 3; i < n + 1; i++){
