@@ -2,22 +2,16 @@ class Solution {
     private Map<Integer, Integer> memo = new HashMap<>();
     
     public int climbStairs(int n) {
-        // Base cases
-        if (n <= 1) {
-            return 1;
+        if(n == 0) return 0;
+        if(n == 1) return 1;
+        if(n == 2) return 2;
+        int[] dp = new int[n+1];
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 2;
+        for(int i = 3; i < n + 1; i++){
+            dp[i] = dp[i-1] + dp[i-2];
         }
-        
-        // Check if we've already computed this value
-        if (memo.containsKey(n)) {
-            return memo.get(n);
-        }
-        
-        // Recursive calculation with memoization
-        int result = climbStairs(n - 1) + climbStairs(n - 2);
-        
-        // Store the result in our memo before returning
-        memo.put(n, result);
-        
-        return result;
+        return dp[n];
     }
 }
