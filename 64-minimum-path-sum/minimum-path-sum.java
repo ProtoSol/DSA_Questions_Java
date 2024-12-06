@@ -2,39 +2,38 @@ class Solution {
     public int minPathSum(int[][] grid) {
         int rows = grid.length;
         int cols = grid[0].length;
-
-        Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[]{0, 0, grid[0][0]});
-        int[][] minSum = new int[rows][cols];
+        
+        int[][] memo = new int[rows][cols];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                minSum[i][j] = Integer.MAX_VALUE;
+                memo[i][j] = -1;
             }
         }
-        minSum[0][0] = grid[0][0];
-        int[][] directions = {{0, 1}, {1, 0}};
 
-        while (!queue.isEmpty()) {
-            int[] current = queue.poll();
-            int x = current[0];
-            int y = current[1];
-            int currentSum = current[2];
+        return dfs(grid, 0, 0, memo);
+    }
 
-            for (int[] direction : directions) {
-                int newX = x + direction[0];
-                int newY = y + direction[1];
+    private int dfs(int[][] grid, int row, int col, int[][] memo) {
+        int rows = grid.length;
+        int cols = grid[0].length;
 
-                if (newX >= 0 && newX < rows && newY >= 0 && newY < cols) {
-                    int newSum = currentSum + grid[newX][newY];
-
-                    if (newSum < minSum[newX][newY]) {
-                        minSum[newX][newY] = newSum;
-                        queue.offer(new int[]{newX, newY, newSum});
-                    }
-                }
-            }
+        if (row == rows - 1 && col == cols - 1) {
+            return grid[row][col];
         }
-        return minSum[rows - 1][cols - 1];
+        if (memo[row][col] != -1) {
+            return memo[row][col];
+        }
+
+        int minSum = Integer.MAX_VALUE;
+
+        if (row + 1 < rows) {
+            minSum = Math.min(minSum, dfs(grid, row + 1, col, memo));
+        }
+        if (col + 1 < cols) {
+            minSum = Math.min(minSum, dfs(grid, row, col + 1, memo));
+        }
+        memo[row][col] = grid[row][col] + minSum;
+        return memo[row][col];
     }
 }
