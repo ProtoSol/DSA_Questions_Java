@@ -13,23 +13,20 @@ class Node {
 }
 
 class LRUCache {
-
     private Node head;
     private Node tail;
     private int capacity;
     private Map<Integer, Node> lookup;
-    private Map<Integer, Integer> values;
 
     public LRUCache(int capacity) {
         this.capacity = capacity;
         this.lookup = new HashMap<>();
-        this.values = new HashMap<>();
         head = new Node(-1, -1); // Dummy head node
         tail = new Node(-1, -1); // Dummy tail node
         head.next = tail;
         tail.previous = head;
     }
-    
+
     // Helper function to move a node to the end (before the tail)
     private void updateNode(Node node) {
         // Remove the node from its current position in the list
@@ -56,7 +53,7 @@ class LRUCache {
 
         return node.value;
     }
-    
+
     public void put(int key, int value) {
         if (lookup.containsKey(key)) {
             // If the node exists, update its value and move it to the end
@@ -71,13 +68,11 @@ class LRUCache {
                 head.next = nodeToRemove.next;
                 nodeToRemove.next.previous = head;
                 lookup.remove(nodeToRemove.key);
-                values.remove(nodeToRemove.key);
             }
 
             // Create a new node and add it to the cache
             Node newNode = new Node(key, value);
             lookup.put(key, newNode);
-            values.put(key, value);
             updateNode(newNode);
         }
     }
